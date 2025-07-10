@@ -1,7 +1,13 @@
-"use client";
-
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import SignInSide from "@/components/auth/SignInSide";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+
+  if (session) {
+    redirect("/dashboard");
+  }
+
   return <SignInSide />;
 }

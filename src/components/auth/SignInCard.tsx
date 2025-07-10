@@ -10,6 +10,8 @@ import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import ForgotPassword from "./ForgotPassword";
 import { SitemarkIcon } from "@/components/ui/CustomIcons";
 
@@ -37,6 +39,8 @@ export default function SignInCard() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const router = useRouter();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,16 +50,39 @@ export default function SignInCard() {
     setOpen(false);
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!validateInputs()) {
       return;
     }
+
+    setIsLoading(true);
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setEmailError(true);
+        setEmailErrorMessage("Invalid email or password");
+      } else {
+        // Успішний вхід - редирект на dashboard
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      console.error("Sign in error:", error);
+      setEmailError(true);
+      setEmailErrorMessage("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const validateInputs = () => {
@@ -157,9 +184,9 @@ export default function SignInCard() {
           type="submit"
           fullWidth
           variant="contained"
-          onClick={validateInputs}
+          disabled={isLoading}
         >
-          Sign in
+          {isLoading ? "Signing in..." : "Sign in"}
         </Button>
         <Typography sx={{ textAlign: "center" }}>
           Don&apos;t have an account?{" "}
