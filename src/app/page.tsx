@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import SignInLayout from "@/components/layout/SignInLayout";
+import AuthLayout from "@/components/layout/AuthLayout";
+import { AuthCard } from "@/types/auth";
 
 export default async function Home() {
   const session = await auth();
@@ -9,5 +10,5 @@ export default async function Home() {
     redirect("/dashboard");
   }
 
-  return <SignInLayout />;
+  return <AuthLayout initialCard={AuthCard.SIGNIN} />;
 }

@@ -3,12 +3,20 @@
 import * as React from "react";
 import Stack from "@mui/material/Stack";
 import Content from "../auth/Content";
+import AuthSwitcher from "../auth/AuthSwitcher";
+import { AuthCard } from "@/types/auth";
 
 interface AuthLayoutProps {
-  children: React.ReactNode;
+  initialCard?: AuthCard;
 }
 
-export default function AuthLayout({ children }: AuthLayoutProps) {
+export default function AuthLayout({
+  initialCard = AuthCard.SIGNIN,
+}: AuthLayoutProps) {
+  const [isSignInCard, setIsSignInCard] = React.useState(
+    initialCard === AuthCard.SIGNIN,
+  );
+
   return (
     <Stack
       direction="column"
@@ -27,8 +35,11 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           m: "auto",
         }}
       >
-        <Content />
-        {children}
+        {isSignInCard && <Content />}
+        <AuthSwitcher
+          initialCard={initialCard}
+          onCardChange={setIsSignInCard}
+        />
       </Stack>
     </Stack>
   );

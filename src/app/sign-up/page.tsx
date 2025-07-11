@@ -1,7 +1,6 @@
-"use client";
-
-import SignUpLayout from "@/components/layout/SignUpLayout";
+import AuthLayout from "@/components/layout/AuthLayout";
+import { AuthCard } from "@/types/auth";
 
 export default function SignUp() {
-  return <SignUpLayout />;
+  return <AuthLayout initialCard={AuthCard.SIGNUP} />;
 }

@@ -154,7 +154,15 @@ export default function SignInCard() {
         <Typography sx={{ textAlign: "center" }}>
           Don&apos;t have an account?{" "}
           <span>
-            <Link href="/sign-up" variant="body2" sx={{ alignSelf: "center" }}>
+            <Link
+              component="button"
+              variant="body2"
+              sx={{ alignSelf: "center" }}
+              onClick={() => {
+                const event = new CustomEvent("switchAuthCard", { detail: 1 });
+                window.dispatchEvent(event);
+              }}
+            >
               Sign up
             </Link>
           </span>
