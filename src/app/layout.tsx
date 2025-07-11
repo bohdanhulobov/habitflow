@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ThemeRegistry from "@/components/layout/ThemeRegistry";
+import "@/styles/globals.css";
 import { auth } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { TRPCProvider } from "@/components/providers/TRPCProvider";

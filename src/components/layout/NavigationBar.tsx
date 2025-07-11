@@ -10,11 +10,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AvatarIcon from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { HabitFlowIcon } from "../ui/CustomIcons";
+import { redirect } from "next/navigation";
 import Link from "next/link";
+import MuiLink from "@mui/material/Link";
 
 const pages = ["Dashboard", "Statistics"];
 const settings = ["Profile", "Logout"];
@@ -45,8 +46,15 @@ export default function NavigationBar() {
 
   const handleMenuItemClick = (setting: string) => {
     handleCloseUserMenu();
-    if (setting === "Logout") {
-      signOut();
+
+    switch (setting) {
+      case "Profile":
+        redirect("/profile");
+      case "Logout":
+        signOut();
+        break;
+      default:
+        console.warn(`Unhandled setting: ${setting}`);
     }
   };
 
@@ -59,7 +67,7 @@ export default function NavigationBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <Link href="/dashboard" passHref>
+            <Link href="/">
               <HabitFlowIcon sx={{ mr: 0 }} />
             </Link>
           </Box>
@@ -92,9 +100,21 @@ export default function NavigationBar() {
               sx={{ display: { xs: "block", md: "none" } }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>{page}</Typography>
-                </MenuItem>
+                <MuiLink
+                  href={`/${page.toLowerCase()}`}
+                  underline="none"
+                  color="inherit"
+                  key={page}
+                  sx={{ textDecoration: "none" }}
+                >
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography
+                      sx={{ textAlign: "center", textDecoration: "none" }}
+                    >
+                      {page}
+                    </Typography>
+                  </MenuItem>
+                </MuiLink>
               ))}
             </Menu>
           </Box>
@@ -117,9 +137,11 @@ export default function NavigationBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Button
+              <MuiLink
+                href={`/${page.toLowerCase()}`}
+                underline="none"
+                color="inherit"
                 key={page}
-                onClick={handleCloseNavMenu}
                 sx={{
                   my: 2,
                   mr: 2,
@@ -129,7 +151,7 @@ export default function NavigationBar() {
                 }}
               >
                 {page}
-              </Button>
+              </MuiLink>
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>

@@ -2,29 +2,18 @@ import * as React from "react";
 import DarkModeIcon from "@mui/icons-material/DarkModeRounded";
 import LightModeIcon from "@mui/icons-material/LightModeRounded";
 import IconButton, { IconButtonOwnProps } from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import { useColorScheme } from "@mui/material/styles";
 
 export default function ColorModeIconDropdown(props: IconButtonOwnProps) {
   const { mode, setMode } = useColorScheme();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMode = (targetMode: "light" | "dark") => () => {
-    setMode(targetMode);
+  const handleToggle = () => {
+    const nextMode = mode === "light" ? "dark" : "light";
+    setMode(nextMode);
     try {
-      document.cookie = `mui-mode=${targetMode}; path=/; max-age=31536000`;
+      document.cookie = `mui-mode=${nextMode}; path=/; max-age=31536000`;
     } catch (e) {
       console.error("Failed to set cookie for color mode:", e);
     }
-    handleClose();
   };
 
   if (!mode) {
@@ -37,44 +26,15 @@ export default function ColorModeIconDropdown(props: IconButtonOwnProps) {
     dark: <DarkModeIcon />,
   }[resolvedMode];
   return (
-    <React.Fragment>
-      <IconButton
-        data-screenshot="toggle-mode"
-        onClick={handleClick}
-        disableRipple
-        size="small"
-        aria-controls={open ? "color-scheme-menu" : undefined}
-        aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        {...props}
-      >
-        {icon}
-      </IconButton>
-      <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        slotProps={{
-          paper: {
-            variant: "outlined",
-            elevation: 0,
-            sx: {
-              my: "4px",
-            },
-          },
-        }}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem selected={mode === "light"} onClick={handleMode("light")}>
-          Light
-        </MenuItem>
-        <MenuItem selected={mode === "dark"} onClick={handleMode("dark")}>
-          Dark
-        </MenuItem>
-      </Menu>
-    </React.Fragment>
+    <IconButton
+      data-screenshot="toggle-mode"
+      onClick={handleToggle}
+      disableRipple
+      size="small"
+      aria-label="Toggle color mode"
+      {...props}
+    >
+      {icon}
+    </IconButton>
   );
 }

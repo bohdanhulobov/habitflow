@@ -1,14 +1,6 @@
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { Container, Typography, Box } from "@mui/material";
 
 export default async function DashboardPage() {
-  const session = await auth();
-
-  if (!session) {
-    redirect("/");
-  }
-
   return (
     <>
       <Container maxWidth="lg" sx={{ py: 4 }}>
