@@ -71,47 +71,64 @@ async function main() {
     habits.map((h) => h.title),
   );
 
-  // Create test habit logs
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-
-  const logs = await Promise.all([
-    prisma.habitLog.upsert({
-      where: {
-        habitId_date: {
-          habitId: habits[0].id,
-          date: today,
-        },
-      },
-      update: {},
-      create: {
-        habitId: habits[0].id,
-        userId: testUser.id,
-        date: today,
-        value: 1,
-        notes: "Great morning workout!",
-      },
-    }),
-    prisma.habitLog.upsert({
-      where: {
-        habitId_date: {
-          habitId: habits[1].id,
-          date: yesterday,
-        },
-      },
-      update: {},
-      create: {
-        habitId: habits[1].id,
-        userId: testUser.id,
-        date: yesterday,
-        value: 25,
-        notes: "Read an interesting book about productivity",
-      },
-    }),
-  ]);
-
-  console.log("📊 Created habit logs:", logs.length);
+  const logs = [];
+  for (const habit of habits) {
+    for (let i = 0; i < 30; i++) {
+      // Randomly skip some days for realism
+      if (Math.random() < 0.15) continue;
+      const logDate = new Date();
+      logDate.setDate(logDate.getDate() - i);
+      // Randomize value, allow zeroes and spikes
+      let value;
+      switch (habit.id) {
+        case "habit-1": // Morning Exercise
+          value = Math.random() < 0.1 ? 0 : 1;
+          break;
+        case "habit-2": // Reading
+          value = Math.random() < 0.2 ? 0 : Math.floor(15 + Math.random() * 20); // 15-35 min
+          break;
+        case "habit-3": // Meditation
+          value = Math.random() < 0.15 ? 0 : Math.floor(5 + Math.random() * 10); // 5-15 min
+          break;
+        default:
+          value = 1;
+      }
+      // Add notes for some logs
+      let notes = "";
+      if (value === 0) {
+        notes = "Missed today";
+      } else if (Math.random() < 0.2) {
+        notes = [
+          "Felt great!",
+          "Struggled a bit",
+          "Routine day",
+          "Improved focus",
+          "Quick session",
+          "Very productive",
+        ][Math.floor(Math.random() * 6)];
+      }
+      logs.push(
+        prisma.habitLog.upsert({
+          where: {
+            habitId_date: {
+              habitId: habit.id,
+              date: logDate,
+            },
+          },
+          update: {},
+          create: {
+            habitId: habit.id,
+            userId: testUser.id,
+            date: logDate,
+            value,
+            notes,
+          },
+        }),
+      );
+    }
+  }
+  const logResults = await Promise.all(logs);
+  console.log("📊 Created habit logs:", logResults.length);
   console.log("🎉 Seeding completed!");
 }
 
