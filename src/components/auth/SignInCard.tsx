@@ -11,16 +11,31 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import ForgotPassword from "./ForgotPassword";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import ForgotPassword from "@/components/auth/ForgotPassword";
+
+const signInSchema = z.object({
+  email: z.email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters long"),
+});
+
+type FormData = z.infer<typeof signInSchema>;
 
 export default function SignInCard() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
   const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+    setError,
+  } = useForm<FormData>({
+    resolver: zodResolver(signInSchema),
+    mode: "all",
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,66 +45,29 @@ export default function SignInCard() {
     setOpen(false);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!validateInputs()) {
-      return;
-    }
-
-    setIsLoading(true);
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email") as string;
-    const password = data.get("password") as string;
-
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     try {
       const result = await signIn("credentials", {
-        email,
-        password,
+        email: data.email,
+        password: data.password,
         redirect: false,
       });
 
       if (result?.error) {
-        setEmailError(true);
-        setEmailErrorMessage("Invalid email or password");
+        setError("root", {
+          type: "manual",
+          message: "Invalid email or password",
+        });
       } else {
-        // Успішний вхід - редирект на dashboard
         router.push("/dashboard");
       }
     } catch (error) {
       console.error("Sign in error:", error);
-      setEmailError(true);
-      setEmailErrorMessage("Something went wrong. Please try again.");
-    } finally {
-      setIsLoading(false);
+      setError("root", {
+        type: "manual",
+        message: "Something went wrong. Please try again.",
+      });
     }
-  };
-
-  const validateInputs = () => {
-    const email = document.getElementById("email") as HTMLInputElement;
-    const password = document.getElementById("password") as HTMLInputElement;
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage("Please enter a valid email address.");
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage("");
-    }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage("Password must be at least 6 characters long.");
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage("");
-    }
-
-    return isValid;
   };
 
   return (
@@ -103,25 +81,24 @@ export default function SignInCard() {
       </Typography>
       <Box
         component="form"
-        onSubmit={handleSubmit}
-        noValidate
+        onSubmit={handleSubmit(onSubmit)}
         sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
       >
         <FormControl>
           <FormLabel htmlFor="email">Email</FormLabel>
           <TextField
-            error={emailError}
-            helperText={emailErrorMessage}
+            {...register("email")}
+            error={!!errors.email}
+            helperText={errors.email?.message}
             id="email"
             type="email"
-            name="email"
             placeholder="your@email.com"
             autoComplete="email"
             autoFocus
             required
             fullWidth
             variant="outlined"
-            color={emailError ? "error" : "primary"}
+            color={errors.email ? "error" : "primary"}
           />
         </FormControl>
         <FormControl>
@@ -138,18 +115,17 @@ export default function SignInCard() {
             </Link>
           </Box>
           <TextField
-            error={passwordError}
-            helperText={passwordErrorMessage}
-            name="password"
+            {...register("password")}
+            error={!!errors.password}
+            helperText={errors.password?.message}
             placeholder="••••••"
             type="password"
             id="password"
             autoComplete="current-password"
-            autoFocus
             required
             fullWidth
             variant="outlined"
-            color={passwordError ? "error" : "primary"}
+            color={errors.password ? "error" : "primary"}
           />
         </FormControl>
         <FormControlLabel
@@ -161,10 +137,20 @@ export default function SignInCard() {
           type="submit"
           fullWidth
           variant="contained"
-          disabled={isLoading}
+          color="primary"
+          disabled={isSubmitting || !isValid}
         >
-          {isLoading ? "Signing in..." : "Sign in"}
+          {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
+        {errors.root && (
+          <Typography
+            color="error"
+            variant="body2"
+            sx={{ textAlign: "center" }}
+          >
+            {errors.root.message}
+          </Typography>
+        )}
         <Typography sx={{ textAlign: "center" }}>
           Don&apos;t have an account?{" "}
           <span>
