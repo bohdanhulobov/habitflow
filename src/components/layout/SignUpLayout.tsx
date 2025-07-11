@@ -2,12 +2,12 @@
 
 import * as React from "react";
 import AuthLayout from "./AuthLayout";
-import SignInCard from "../auth/SignInCard";
+import SignUpCard from "../auth/SignUpCard";
 
-export default function SignInLayout() {
+export default function SignUpLayout() {
   return (
     <AuthLayout>
-      <SignInCard />
+      <SignUpCard />
     </AuthLayout>
   );
 }
