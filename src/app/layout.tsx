@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ThemeRegistry from "@/components/layout/ThemeRegistry";
 import { auth } from "@/lib/auth";
+import { TRPCProvider } from "@/components/providers/TRPCProvider";
 
 export const metadata: Metadata = {
   title: "HabitFlow",
@@ -37,7 +38,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ThemeRegistry session={session}>{children}</ThemeRegistry>
+        <TRPCProvider>
+          <ThemeRegistry session={session}>{children}</ThemeRegistry>
+        </TRPCProvider>
       </body>
     </html>
   );

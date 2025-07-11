@@ -1,13 +1,15 @@
 import type { NextAuthOptions } from "next-auth";
 import { getServerSession } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "./prisma";
+import bcrypt from "bcryptjs";
 import type {
   GetServerSidePropsContext,
   NextApiRequest,
   NextApiResponse,
 } from "next";
 
-// Конфігурація NextAuth
+// NextAuth configuration
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -25,32 +27,62 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        // ТИМЧАСОВА ЛОГІКА - замініть на справжню перевірку з бази даних
-        if (
-          credentials?.email === "test@example.com" &&
-          credentials?.password === "password"
-        ) {
-          return {
-            id: "1",
-            name: "Test User",
-            email: "test@example.com",
-          };
+        if (!credentials?.email || !credentials?.password) {
+          return null;
         }
 
-        // Повертаємо null якщо авторизація не вдалась
-        return null;
+        try {
+          // Find user in database
+          const user = await prisma.user.findUnique({
+            where: {
+              email: credentials.email,
+            },
+          });
+
+          if (!user) {
+            return null;
+          }
+
+          // Check password
+          const isPasswordValid = await bcrypt.compare(
+            credentials.password,
+            user.password,
+          );
+
+          if (!isPasswordValid) {
+            return null;
+          }
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            image: user.image,
+          };
+        } catch (error) {
+          console.error("Auth error:", error);
+          return null;
+        }
       },
     }),
   ],
   pages: {
     signIn: "/",
-    // error: "/auth/error",
   },
   callbacks: {
-    async session({ session }) {
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
       return session;
     },
-    async jwt({ token }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
       return token;
     },
   },
@@ -59,7 +91,7 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
-// Конфігурація для використання в middleware та серверних компонентах
+// Configuration for use in middleware and server components
 export const config = {
   providers: authOptions.providers,
   callbacks: authOptions.callbacks,
@@ -67,7 +99,7 @@ export const config = {
   session: authOptions.session,
 } satisfies NextAuthOptions;
 
-// Хелпер функція для отримання сесії на сервері
+// Helper function to get session on server
 export function auth(
   ...args:
     | [GetServerSidePropsContext["req"], GetServerSidePropsContext["res"]]
