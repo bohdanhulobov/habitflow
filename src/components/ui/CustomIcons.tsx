@@ -1,9 +1,9 @@
 import * as React from "react";
 import SvgIcon from "@mui/material/SvgIcon";
 
-export function HabitFlowIcon() {
+export function HabitFlowIcon(props: React.ComponentProps<typeof SvgIcon>) {
   return (
-    <SvgIcon sx={{ height: 28, width: 140, mr: 2 }}>
+    <SvgIcon {...props} sx={{ height: 28, width: 140, mr: 2, ...props.sx }}>
       <svg
         width={140}
         height={28}

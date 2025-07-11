@@ -4,7 +4,8 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
 import AppTheme from "@/styles/theme/AppTheme";
-import ColorModeSelect from "@/styles/theme/ColorModeSelect";
+import NavigationBar from "./NavigationBar";
+import ColorModeIconDropdown from "@/styles/theme/ColorModeIconDropdown";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -23,10 +24,16 @@ export default function AppLayout({
     <AppTheme disableCustomTheme={disableCustomTheme}>
       <CssBaseline enableColorScheme />
       {showColorModeSelect && (
-        <ColorModeSelect
-          sx={{ position: "fixed", top: "1rem", right: "1rem" }}
+        <ColorModeIconDropdown
+          sx={{
+            position: "fixed",
+            bottom: "2rem",
+            right: "2rem",
+            scale: "1.2",
+          }}
         />
       )}
+      <NavigationBar />
       <Stack
         direction="column"
         component="main"
