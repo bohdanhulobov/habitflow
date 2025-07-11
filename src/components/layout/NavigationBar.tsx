@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
+import AvatarIcon from "@mui/material/Avatar";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -134,10 +135,14 @@ export default function NavigationBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt={session.user.name ?? "User"}
-                  src={session.user.image ?? "/apple-touch-icon.svg"}
-                />
+                {!session.user.image ? (
+                  <AvatarIcon variant="square" sx={{ borderRadius: 1 }} />
+                ) : (
+                  <Avatar
+                    alt={session.user.name ?? "User"}
+                    src={session.user.image ?? undefined}
+                  ></Avatar>
+                )}
               </IconButton>
             </Tooltip>
             <Menu

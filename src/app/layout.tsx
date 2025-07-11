@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ThemeRegistry from "@/components/layout/ThemeRegistry";
 import { auth } from "@/lib/auth";
+import { cookies } from "next/headers";
 import { TRPCProvider } from "@/components/providers/TRPCProvider";
 
 export const metadata: Metadata = {
@@ -35,27 +36,18 @@ export default async function RootLayout({
 }) {
   const session = await auth();
 
+  // SSR: Read theme mode from cookie
+  const cookieStore = await cookies();
+  let mode = cookieStore.get("mui-mode")?.value;
+
+  if (!mode) {
+    mode = "light";
+  }
+
   return (
-    <html lang="en">
+    <html lang="en" data-mui-color-scheme={mode} style={{ colorScheme: mode }}>
       <head>
-        {/* Prevent theme blinking by setting color-scheme before hydration */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var mode = localStorage.getItem('mui-mode');
-                  if (!mode || mode === 'system') {
-                    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                    mode = prefersDark ? 'dark' : 'light';
-                  }
-                  document.documentElement.setAttribute('data-mui-color-scheme', mode);
-                  document.documentElement.style.colorScheme = mode;
-                } catch (e) {}
-              })();
-            `,
-          }}
-        />
+        {/* This tag prevent theme blinking by setting color-scheme before hydration */}
       </head>
       <body>
         <TRPCProvider>
