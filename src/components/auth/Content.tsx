@@ -6,20 +6,20 @@ import AutoFixHighRoundedIcon from "@mui/icons-material/AutoFixHighRounded";
 import ConstructionRoundedIcon from "@mui/icons-material/ConstructionRounded";
 import SettingsSuggestRoundedIcon from "@mui/icons-material/SettingsSuggestRounded";
 import ThumbUpAltRoundedIcon from "@mui/icons-material/ThumbUpAltRounded";
-import { SitemarkIcon } from "@/components/ui/CustomIcons";
+import { HabitFlowIcon } from "@/components/ui/CustomIcons";
 
 const items = [
   {
     icon: <SettingsSuggestRoundedIcon sx={{ color: "text.secondary" }} />,
-    title: "Adaptable performance",
+    title: "Adaptable setup",
     description:
-      "Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.",
+      "Track you habits in the way you want - brand new level of customization.",
   },
   {
     icon: <ConstructionRoundedIcon sx={{ color: "text.secondary" }} />,
-    title: "Built to last",
+    title: "Built to make you last",
     description:
-      "Experience unmatched durability that goes above and beyond with lasting investment.",
+      "Our product is designed to grow with you, ensuring it remains relevant and useful as your needs evolve.",
   },
   {
     icon: <ThumbUpAltRoundedIcon sx={{ color: "text.secondary" }} />,
@@ -46,7 +46,7 @@ export default function Content() {
       }}
     >
       <Box sx={{ display: { xs: "none", md: "flex" } }}>
-        <SitemarkIcon />
+        <HabitFlowIcon />
       </Box>
       {items.map((item, index) => (
         <Stack key={index} direction="row" sx={{ gap: 2 }}>

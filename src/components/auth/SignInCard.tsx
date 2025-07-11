@@ -13,7 +13,6 @@ import { styled } from "@mui/material/styles";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ForgotPassword from "./ForgotPassword";
-import { SitemarkIcon } from "@/components/ui/CustomIcons";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -114,9 +113,6 @@ export default function SignInCard() {
 
   return (
     <Card variant="outlined">
-      <Box sx={{ display: { xs: "flex", md: "none" } }}>
-        <SitemarkIcon />
-      </Box>
       <Typography
         component="h1"
         variant="h4"
@@ -191,11 +187,7 @@ export default function SignInCard() {
         <Typography sx={{ textAlign: "center" }}>
           Don&apos;t have an account?{" "}
           <span>
-            <Link
-              href="/material-ui/getting-started/templates/sign-in/"
-              variant="body2"
-              sx={{ alignSelf: "center" }}
-            >
+            <Link href="/signup" variant="body2" sx={{ alignSelf: "center" }}>
               Sign up
             </Link>
           </span>

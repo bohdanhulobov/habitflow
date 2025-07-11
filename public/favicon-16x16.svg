@@ -1,0 +1,31 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circular flow icon for favicon 16x16 -->
+  <g>
+    <!-- Outer ring -->
+    <circle
+      cx="8"
+      cy="8"
+      r="7"
+      stroke="hsl(210, 98%, 55%)"
+      stroke-width="1.5"
+      fill="none"
+      opacity="0.4"
+    />
+    
+    <!-- Progress dots at clock positions -->
+    <circle cx="8" cy="1" r="0.8" fill="hsl(210, 98%, 55%)" opacity="0.5" />
+    <circle cx="15" cy="8" r="1" fill="hsl(210, 98%, 55%)" opacity="0.7" />
+    <circle cx="8" cy="15" r="1.2" fill="hsl(210, 98%, 55%)" opacity="0.9" />
+    <circle cx="1" cy="8" r="1.5" fill="hsl(210, 98%, 55%)" />
+    
+    <!-- Central checkmark -->
+    <path
+      d="M5 8l2 2 4-4"
+      stroke="hsl(210, 98%, 55%)"
+      stroke-width="1.5"
+      fill="none"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+</svg>
