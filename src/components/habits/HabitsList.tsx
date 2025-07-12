@@ -23,8 +23,6 @@ export default function HabitsList() {
     return <Error errorMessage={"Habits cannot be fetched"} />;
   }
 
-  console.log("Habits data:", data);
-
   return (
     <Box
       sx={{
