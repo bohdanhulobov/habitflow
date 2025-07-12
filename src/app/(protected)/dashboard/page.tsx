@@ -9,6 +9,8 @@ import CardHeader from "@mui/material/CardHeader";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { api } from "@/components/providers/TRPCProvider";
+import Loader from "@/components/ui/molecules/Loader";
+import PageHeader from "@/components/ui/organisms/PageHeader";
 
 export default function DashboardPage() {
   const { data, isLoading, error } = api.habit.getTodayOverview.useQuery();
@@ -21,12 +23,10 @@ export default function DashboardPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Dashboard
-        </Typography>
+        <PageHeader title="Dashboard" />
         <Box sx={{ mt: 2 }}>
           {isLoading ? (
-            <Typography>Loading habits...</Typography>
+            <Loader wording="Loading dashboard..." />
           ) : error ? (
             <Typography color="error">Error loading habits</Typography>
           ) : (
@@ -88,7 +88,7 @@ export default function DashboardPage() {
                 All Current Habits
               </Typography>
               {isLoadingAll ? (
-                <Typography>Loading all habits...</Typography>
+                <Loader wording="Loading all habits..." />
               ) : errorAll ? (
                 <Typography color="error">Error loading all habits</Typography>
               ) : (

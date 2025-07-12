@@ -4,7 +4,7 @@ import * as React from "react";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { SessionProvider } from "next-auth/react";
 import type { Session } from "next-auth";
-import AppLayout from "./AppLayout";
+import AppLayout from "@/components/layout/AppLayout";
 
 export default function ThemeRegistry({
   children,

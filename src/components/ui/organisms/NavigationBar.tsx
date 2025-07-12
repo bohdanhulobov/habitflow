@@ -12,12 +12,12 @@ import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { HabitFlowIcon } from "../ui/CustomIcons";
+import { HabitFlowIcon } from "@/components/ui/atoms/CustomIcons";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import MuiLink from "@mui/material/Link";
 
-const pages = ["Dashboard", "Statistics"];
+const pages = ["Dashboard", "Habits", "Statistics"];
 const settings = ["Profile", "Logout"];
 
 export default function NavigationBar() {

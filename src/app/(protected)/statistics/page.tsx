@@ -4,17 +4,15 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { api } from "@/components/providers/TRPCProvider";
 import type { StatisticsData, HabitData } from "@/types/statistics";
+import Loader from "@/components/ui/molecules/Loader";
+import PageHeader from "@/components/ui/organisms/PageHeader";
 
 export default function StatisticsPage() {
   const { data, isLoading, error } =
     api.statistics.getStatistics.useQuery<StatisticsData>();
 
   if (isLoading) {
-    return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Typography>Loading...</Typography>
-      </Container>
-    );
+    return <Loader wording="Loading statistics..." />;
   }
   if (error || !data) {
     return (
@@ -33,9 +31,7 @@ export default function StatisticsPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <Box>
-        <Typography variant="h4" component="h1" gutterBottom>
-          Statistics
-        </Typography>
+        <PageHeader title="Statistics" />
         {/* Progress Toward Monthly Goal */}
         <Box sx={{ mt: 4 }}>
           <Typography variant="h6" gutterBottom>
@@ -112,7 +108,6 @@ export default function StatisticsPage() {
             height={200}
           />
         </Box>
-
         {/* Monthly Consistency Rate Pie Chart */}
         <Box sx={{ mt: 4 }}>
           <Typography variant="h6" gutterBottom>
@@ -167,7 +162,6 @@ export default function StatisticsPage() {
           width={500}
           height={300}
         />
-
         {/* Completions Over Time Line Chart */}
         <Box sx={{ mt: 4 }}>
           <Typography variant="h6" gutterBottom>

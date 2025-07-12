@@ -4,8 +4,6 @@ import SignInCard from "@/components/auth/SignInCard";
 import SignUpCard from "@/components/auth/SignUpCard";
 import { AuthCard } from "@/types/auth";
 
-export { AuthCard } from "@/types/auth";
-
 interface AuthSwitcherProps {
   initialCard?: AuthCard;
   onCardChange?: (isSignIn: boolean) => void;

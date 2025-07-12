@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Stack from "@mui/material/Stack";
-import Content from "../auth/Content";
-import AuthSwitcher from "../auth/AuthSwitcher";
+import Content from "@/components/auth/Content";
+import AuthSwitcher from "@/components/auth/AuthSwitcher";
 import { AuthCard } from "@/types/auth";
 
 interface AuthLayoutProps {
