@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Box } from "@mui/material";
-import SignInCard from "@/components/auth/SignInCard";
-import SignUpCard from "@/components/auth/SignUpCard";
+import SignInForm from "@/components/auth/SignInForm";
+import SignUpCard from "@/components/auth/SignUpForm";
 import { AuthCard } from "@/types/auth";
 
 interface AuthSwitcherProps {
@@ -49,7 +49,7 @@ export default function AuthSwitcher({
 
   return (
     <Box sx={{ width: "100%" }}>
-      {currentCard === AuthCard.SIGNIN ? <SignInCard /> : <SignUpCard />}
+      {currentCard === AuthCard.SIGNIN ? <SignInForm /> : <SignUpCard />}
     </Box>
   );
 }

@@ -31,7 +31,7 @@ const signUpSchema = z
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
-export default function SignUpCard() {
+export default function SignUpForm() {
   const {
     register,
     handleSubmit,

@@ -23,7 +23,7 @@ const signInSchema = z.object({
 
 type FormData = z.infer<typeof signInSchema>;
 
-export default function SignInCard() {
+export default function SignInForm() {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   // Read callbackUrl from search params
