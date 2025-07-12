@@ -26,6 +26,12 @@ type FormData = z.infer<typeof signInSchema>;
 export default function SignInCard() {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
+  // Read callbackUrl from search params
+  const searchParams =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : undefined;
+  const callbackUrl = searchParams?.get("callbackUrl") || "/dashboard";
 
   const {
     register,
@@ -51,6 +57,7 @@ export default function SignInCard() {
         email: data.email,
         password: data.password,
         redirect: false,
+        callbackUrl,
       });
 
       if (result?.error) {
@@ -59,7 +66,7 @@ export default function SignInCard() {
           message: "Invalid email or password",
         });
       } else {
-        router.push("/dashboard");
+        router.push(callbackUrl);
       }
     } catch (error) {
       console.error("Sign in error:", error);
