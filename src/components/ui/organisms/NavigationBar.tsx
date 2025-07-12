@@ -17,7 +17,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import MuiLink from "@mui/material/Link";
 
-const pages = ["Dashboard", "Habits", "Statistics"];
+const pages = ["Dashboard", "Habits", "Goals", "Statistics"];
 const settings = ["Profile", "Logout"];
 
 export default function NavigationBar() {

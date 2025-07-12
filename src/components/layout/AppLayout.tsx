@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import AppTheme from "@/styles/theme/AppTheme";
 import NavigationBar from "@/components/ui/organisms/NavigationBar";
 import ColorModeIconDropdown from "@/styles/theme/ColorModeIconDropdown";
+import { Container } from "@mui/material";
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -34,22 +35,24 @@ export default function AppLayout({
         />
       )}
       <NavigationBar />
-      <Stack
-        direction="column"
-        component="main"
-        sx={[
-          {
-            minHeight: "100vh",
-            ...(centered && {
-              justifyContent: "center",
-              height: "calc((1 - var(--template-frame-height, 0)) * 100%)",
-              marginTop: "max(40px - var(--template-frame-height, 0px), 0px)",
-            }),
-          },
-        ]}
-      >
-        {children}
-      </Stack>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Stack
+          direction="column"
+          component="main"
+          sx={[
+            {
+              minHeight: "100vh",
+              ...(centered && {
+                justifyContent: "center",
+                height: "calc((1 - var(--template-frame-height, 0)) * 100%)",
+                marginTop: "max(40px - var(--template-frame-height, 0px), 0px)",
+              }),
+            },
+          ]}
+        >
+          {children}
+        </Stack>
+      </Container>
     </AppTheme>
   );
 }
