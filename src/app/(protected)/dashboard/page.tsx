@@ -8,9 +8,9 @@ import CardHeader from "@mui/material/CardHeader";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { api } from "@/components/providers/TRPCProvider";
-import Loader from "@/components/ui/molecules/Loader";
-import PageHeader from "@/components/ui/organisms/PageHeader";
-import Error from "@/components/ui/molecules/Error";
+import Loader from "@/components/shared/molecules/Loader";
+import PageHeader from "@/components/shared/organisms/PageHeader";
+import Error from "@/components/shared/molecules/Error";
 
 export default function DashboardPage() {
   const { data, isLoading, error } = api.habit.getTodayOverview.useQuery();

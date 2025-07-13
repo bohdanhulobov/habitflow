@@ -9,8 +9,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/Inbox";
 import { api } from "@/components/providers/TRPCProvider";
-import Loader from "@/components/ui/molecules/Loader";
-import Error from "@/components/ui/molecules/Error";
+import Loader from "@/components/shared/molecules/Loader";
+import Error from "@/components/shared/molecules/Error";
 
 export default function HabitsList() {
   const { data, isLoading, error } = api.habit.getAll.useQuery();

@@ -2,16 +2,8 @@ import * as React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  FormControl,
-  Link,
-  Box,
-  Card,
-  Typography,
-  FormLabel,
-  TextField,
-  Button,
-} from "@mui/material";
+import { Link, Box, Card, Typography, Button } from "@mui/material";
+import { ControlledTextInput } from "../shared/molecules/ControlledFields";
 
 const signUpSchema = z
   .object({
@@ -33,13 +25,19 @@ type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export default function SignUpForm() {
   const {
-    register,
+    control,
     handleSubmit,
-    formState: { errors, isSubmitting, isValid },
+    formState: { isSubmitting, isValid, errors },
     setError,
   } = useForm({
     resolver: zodResolver(signUpSchema),
     mode: "onBlur",
+    defaultValues: {
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   const onSubmit: SubmitHandler<SignUpFormData> = async (data) => {
@@ -70,70 +68,40 @@ export default function SignUpForm() {
         onSubmit={handleSubmit(onSubmit)}
         sx={{ display: "flex", flexDirection: "column", width: "100%", gap: 2 }}
       >
-        <FormControl>
-          <FormLabel htmlFor="username">Username</FormLabel>
-          <TextField
-            {...register("username")}
-            error={!!errors.username}
-            helperText={errors.username?.message}
-            id="username"
-            type="text"
-            placeholder="your_username"
-            autoComplete="username"
-            required
-            fullWidth
-            variant="outlined"
-            color={errors.username ? "error" : "primary"}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
-          <TextField
-            {...register("email")}
-            error={!!errors.email}
-            helperText={errors.email?.message}
-            id="email"
-            type="email"
-            placeholder="your@email.com"
-            autoComplete="email"
-            required
-            fullWidth
-            variant="outlined"
-            color={errors.email ? "error" : "primary"}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="password">Password</FormLabel>
-          <TextField
-            {...register("password")}
-            error={!!errors.password}
-            helperText={errors.password?.message}
-            id="password"
-            type="password"
-            placeholder="Qwerty123!"
-            autoComplete="new-password"
-            required
-            fullWidth
-            variant="outlined"
-            color={errors.password ? "error" : "primary"}
-          />
-        </FormControl>
-        <FormControl>
-          <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-          <TextField
-            {...register("confirmPassword")}
-            error={!!errors.confirmPassword}
-            helperText={errors.confirmPassword?.message}
-            id="confirmPassword"
-            type="password"
-            placeholder="The same as above"
-            autoComplete="new-password"
-            required
-            fullWidth
-            variant="outlined"
-            color={errors.confirmPassword ? "error" : "primary"}
-          />
-        </FormControl>
+        <ControlledTextInput
+          name="username"
+          control={control}
+          label={{ text: "Username" }}
+          autoComplete="username"
+          placeholder="Your username"
+        />
+        <ControlledTextInput
+          name="email"
+          control={control}
+          label={{ text: "Email" }}
+          type="email"
+          autoComplete="email"
+          placeholder="Your email address"
+          fullWidth
+        />
+        <ControlledTextInput
+          name="password"
+          control={control}
+          label={{ text: "Password" }}
+          type="password"
+          autoComplete="new-password"
+          placeholder="Your password"
+          fullWidth
+        />
+        <ControlledTextInput
+          name="confirmPassword"
+          control={control}
+          label={{ text: "Confirm Password" }}
+          type="password"
+          autoComplete="new-password"
+          placeholder="Confirm your password"
+          fullWidth
+        />
         <Button
           type="submit"
           fullWidth

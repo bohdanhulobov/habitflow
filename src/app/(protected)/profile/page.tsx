@@ -1,9 +1,9 @@
 "use client";
 
 import { api } from "@/components/providers/TRPCProvider";
-import Error from "@/components/ui/molecules/Error";
-import Loader from "@/components/ui/molecules/Loader";
-import PageHeader from "@/components/ui/organisms/PageHeader";
+import Error from "@/components/shared/molecules/Error";
+import Loader from "@/components/shared/molecules/Loader";
+import PageHeader from "@/components/shared/organisms/PageHeader";
 import { Typography, Box } from "@mui/material";
 
 export default function ProfilePage() {

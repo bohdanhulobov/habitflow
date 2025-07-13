@@ -4,8 +4,8 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { api } from "@/components/providers/TRPCProvider";
 import type { StatisticsData, HabitData } from "@/types/statistics";
-import Loader from "@/components/ui/molecules/Loader";
-import PageHeader from "@/components/ui/organisms/PageHeader";
+import Loader from "@/components/shared/molecules/Loader";
+import PageHeader from "@/components/shared/organisms/PageHeader";
 
 export default function StatisticsPage() {
   const { data, isLoading, error } =

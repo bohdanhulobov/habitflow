@@ -25,12 +25,13 @@ export interface HabitLog {
   createdAt: Date;
 }
 
-export interface CreateHabitInput {
+export interface NewHabitFormValues {
   title: string;
   description?: string;
   color?: string;
   icon?: string;
-  frequency?: Frequency;
-  targetValue?: number;
+  frequency: Frequency;
+  targetValue: number;
   unit?: string;
+  isActive: boolean;
 }

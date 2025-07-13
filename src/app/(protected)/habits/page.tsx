@@ -1,7 +1,7 @@
 "use client";
 
 import HabitsList from "@/components/habits/HabitsList";
-import PageHeader from "@/components/ui/organisms/PageHeader";
+import PageHeader from "@/components/shared/organisms/PageHeader";
 import { Box } from "@mui/material";
 import NewHabitDrawer from "@/components/habits/NewHabitDrawer";
 

@@ -4,7 +4,7 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Stack from "@mui/material/Stack";
 import AppTheme from "@/styles/theme/AppTheme";
-import NavigationBar from "@/components/ui/organisms/NavigationBar";
+import NavigationBar from "@/components/shared/organisms/NavigationBar";
 import ColorModeIconDropdown from "@/styles/theme/ColorModeIconDropdown";
 import { Container } from "@mui/material";
 
